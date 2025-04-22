@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>iMOVIE</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            overflow-x: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #181818; /* Dark background */
+            color: #e0e0e0; /* Light text */
+        }
+
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.85) !important;
+            border-bottom: 1px solid #333;
+        }
+
+        .navbar-brand {
+            color: #ffc107 !important; /* Gold brand text */
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .nav-link {
+            color: #f8f9fa !important; /* Light nav link text */
+            transition: color 0.3s ease-in-out;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #ffc107 !important;
+        }
+
+        .carousel-item {
+            position: relative;
+        }
+
+        .carousel-item img {
+            height: 550px;
+            object-fit: cover;
+            width: 100%;
+            filter: brightness(70%); /* Slightly dim carousel images */
+        }
+
+        .carousel-caption {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+        }
+
+        .carousel-caption h5 {
+            color: #ffc107;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .carousel-caption p {
+            font-size: 1.1rem;
+        }
+
+        .movie-section {
+            padding: 40px 0;
+        }
+
+        .section-title {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            font-weight: bold;
+            border-bottom: 2px solid #ffc107;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .movie-card {
+            background-color: #212529; /* Dark card background */
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+        }
+
+        .movie-card img {
+            height: 300px;
+            object-fit: cover;
+            width: 100%;
+            display: block;
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+
+        .card-title {
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-text {
+            color: #ccc;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+            height: 60px; /* Fixed height for description */
+            overflow: hidden;
+        }
+
+        .movie-details {
+            color: #999;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .genre-buttons button {
+            background-color: #343a40;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .genre-buttons button:hover {
+            background-color: #555;
+        }
+
+        .rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: left; /* Align rating to the left */
+            margin-top: 10px;
+        }
+
+        .rating input {
+            display: none;
+        }
+
+        .rating label {
+            font-size: 1.2rem;
+            color: #6c757d; /* Light gray stars */
+            cursor: pointer;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .rating input:checked ~ label,
+        .rating label:hover,
+        .rating label:hover ~ label {
+            color: #ffc107; /* Gold active stars */
+        }
+
+        /* Adjustments for smaller screens */
+        @media (max-width: 768px) {
+            .carousel-item img {
+                height: 400px;
+            }
+            .carousel-caption {
+                width: 90%;
+            }
+            .carousel-caption h5 {
+                font-size: 2rem;
+            }
+            .row-cols-md-3 > * {
+                flex-basis: 50%;
+                max-width: 50%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .row-cols-md-3 > * {
+                flex-basis: 100%;
+                max-width: 100%;
+            }
+            .carousel-item img {
+                height: 300px;
+            }
+            .carousel-caption h5 {
+                font-size: 1.5rem;
+            }
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-dark navbar-expand-lg fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                CINEBAE
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#kids">Kids</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#trending">Trending</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#series">Series</a></li>
+                    <li class="nav-item"><a class="nav-link" href="file:///E:/course%20file/movie%20website/index.html#horror">Horror</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#mylist">My List</a></li>
+                    <li class="nav-item"><a class="nav-link" href="E:\course file\movie website\signin.html">Sign in</a></li>
+                    
+                    
+                </ul>
+               <!-- <form class="d-flex ms-lg-3" id="searchForm">
+                    <input class="form-control me-2 bg-dark text-light border-0" type="search" placeholder="Search" aria-label="Search" id="searchInput">
+                    <button class="btn btn-outline-warning" type="submit">Search</button>
+                    
+                </form>-->
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="mt-5 pt-4">
+        <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="E:/moive/aladdin 2.jpg" class="d-block w-100" alt="Aladdin Movie Poster">
+                    <div class="carousel-caption d-md-block">
+                        <h5 class="text-warning">Aladdin</h5>
+                        <p>Aladdin, a kind thief, woos Jasmine, the princess of Agrabah, with the help of Genie. When Jafar, the grand vizier, tries to usurp the king, Jasmine, Aladdin and Genie must stop him from succeeding.</p>
+                        <p class="text-info">Release date: 24 May 2019 (India)</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://images4.alphacoders.com/103/thumb-1920-1030254.jpg" class="d-block w-100" alt="Dora and the Lost City of Gold Movie Poster">
+                    <div class="carousel-caption d-md-block">
+                        <h5 class="text-warning">Dora and the Lost City of Gold</h5>
+                        <p>Dora Marquez embarks on a mission with her monkey, Boots, and her friends to rescue her missing parents and solve the mystery of a fabled city of gold.</p>
+                        <p class="text-info">Release date: 9 August 2019 (USA)</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://c4.wallpaperflare.com/wallpaper/211/640/957/annabelle-comes-home-horror-annabelle-thriller-horror-movies-hd-wallpaper-preview.jpg" class="d-block w-100" alt="Annabelle Movie Poster">
+                    <div class="carousel-caption d-md-block">
+                        <h5 class="text-warning">Annabelle</h5>
+                        <p>John and Mia Form are attacked by members of a satanic cult that uses their old doll as a conduit to make their life miserable. This unleashes a string of paranormal events in the Forms' residence.</p>
+                        <p class="text-info">Release date: 3 October 2014 (USA)</p>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </section>
+    <style>
+      .movie-card {
+          transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      }
+  
+      .movie-card:hover {
+          transform: scale(1.05);
+          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+      }
+  
+      .card-img-top {
+          transition: filter 0.3s ease-in-out;
+      }
+  
+      .movie-card:hover .card-img-top {
+          filter: brightness(110%);
+      }
+  </style>
+  
+  <section id="kids" class="py-5 bg-dark text-light">
+      <div class="container">
+          <h2 class="text-center text-fuchsia mb-4" style="color:#ffc107">KIDS</h2>
+          <div class="row row-cols-1 row-cols-md-3 g-4">
+              <div class="col">
+                  <div class="card h-100 bg-secondary border-0 rounded-4 shadow-sm movie-card">
+                      <a href="file:///E:/course%20file/movie%20website/kids1.html" class="text-decoration-none">
+                          <img src="https://lumiere-a.akamaihd.net/v1/images/p_ratatouille_19736_0814231f.jpeg?region=0%2C0%2C540%2C810" class="card-img-top rounded-top-4" alt="Ratatouille">
+                      </a>
+                      <div class="card-body">
+                          <h5 class="card-title text-deeppink mb-2" style="color:#ffc107">Ratatouille</h5>
+                          <p class="card-text text-light small mb-2">Remy, a rat with culinary aspirations, navigates the challenges of pursuing his dream in the human world.</p>
+                           <br>
+                          <div class="d-flex gap-2 mb-3">
+                              <button class="btn btn-sm btn-outline-info rounded-pill">Adventure</button>
+                              <button class="btn btn-sm btn-outline-info rounded-pill">Family</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col">
+                  <div class="card h-100 bg-secondary border-0 rounded-4 shadow-sm movie-card">
+                      <a href="file:///E:/course%20file/movie%20website/kids2.html" class="text-decoration-none">
+                          <img src="https://www.kamoi.net/wp-content/uploads/2022/02/p_encanto_homeent_22359_4892ae1c-1.jpeg" class="card-img-top rounded-top-4" alt="Encanto">
+                      </a>
+                      <div class="card-body">
+                          <h5 class="card-title text-deeppink mb-2" style="color: #ffc107;">Encanto</h5>
+                          <p class="card-text text-light small mb-2">The extraordinary Madrigal family living in a magical house in Colombia discovers their unique gifts, except for Mirabel.</p>
+                          <br>
+                          <div class="d-flex gap-2 mb-3">
+                              <button class="btn btn-sm btn-outline-info rounded-pill">Family</button>
+                              <button class="btn btn-sm btn-outline-info rounded-pill">Fantasy</button>
+                              <button class="btn btn-sm btn-outline-info rounded-pill">Musical</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col">
+                  <div class="card h-100 bg-secondary border-0 rounded-4 shadow-sm movie-card">
+                      <a href="file:///E:/course%20file/movie%20website/kids3.html" class="text-decoration-none">
+                          <img src="https://upload.wikimedia.org/wikipedia/en/2/29/Dora_and_the_Lost_City_of_Gold_poster.jpg" class="card-img-top rounded-top-4" alt="Dora_and_the_Lost_City_of_Gold_">
+                      </a>
+                      <div class="card-body">
+                          <h5 class="card-title text-deeppink mb-2" style="color: #ffc107;">Dora the lost city of gold</h5>
+                          <p class="card-text text-light small mb-2">Dora Marquez embarks on a mission with her monkey, Boots, and her friends to rescue her missing parents and solve the mystery of a fabled city of gold.</p>
+                          <br>
+                          <div class="d-flex gap-2 mb-3">
+                              <button class="btn btn-sm btn-outline-info rounded-pill">Family</button>
+                              <button class="btn btn-sm btn-outline-info rounded-pill">Fantasy</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+  </section>
+   <section id="trending" class="py-5 bg-dark text-light">
+      <div class="container">
+          <h2 class="text-center text-warning mb-4">TRENDING</h2>
+          <div class="row row-cols-1 row-cols-md-3 g-4">
+              <div class="col">
+                  <div class="card bg-secondary border-0 rounded-4 shadow-sm movie-card">
+                      <a href="file:///E:/course%20file/movie%20website/tend1.html" class="text-decoration-none">
+                          <img src="https://c.saavncdn.com/633/Maara-Tamil-2021-20210203211914-500x500.jpg" class="card-img-top rounded-top-4" alt="Munjya">
+                      </a>
+                      <div class="card-body">
+                          <h5 class="card-title text-warning mb-2" style="color:#ffc107">Maara</h5>
+                          <p class="card-text text-light small mb-2">A young woman named Paaru notices a painting on the walls of a coastal town that depicts a fairy tale she once heard as a child. Intrigued, she sets out to find the person who painted it.</p>
+                          <br>
+                          <div class="d-flex gap-2 mb-3">
+                              <button class="btn btn-sm btn-outline-info rounded-pill">Romance</button>
+                              <button class="btn btn-sm btn-outline-info rounded-pill">Adventure</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col">
+                  <div class="card bg-secondary border-0 rounded-4 shadow-sm movie-card">
+                      <a href="file:///E:/course%20file/movie%20website/trend2.html" class="text-decoration-none">
+                          <img src="https://m.media-amazon.com/images/S/pv-target-images/e21a6b38670c9d1fb4720f7cd28be13ad8d31a5c600f088bb0bd557176c1b4a5.jpg" class="card-img-top rounded-top-4" alt="Premalu">
+                      </a>
+                      <div class="card-body">
+                          <h5 class="card-title text-warning mb-2" style="color: #ffc107;">OK Kanmani</h5>
+                          <p class="card-text text-light small mb-2">Two youngsters Adi and Tara are attracted to each other when they meet at a wedding. Since they do not believe in marriage, they decide to live together. What follows forms the crux of the story.</p>
+                          <br>
+                          <div class="d-flex gap-2 mb-3">
+                              <button class="btn btn-sm btn-outline-info rounded-pill">Romance</button>
+                              <button class="btn btn-sm btn-outline-info rounded-pill">Musical</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col">
+                  <div class="card bg-secondary border-0 rounded-4 shadow-sm movie-card">
+                      <a href="file:///E:/course%20file/movie%20website/trend3.html" class="text-decoration-none">
+                          <img src="https://m.media-amazon.com/images/S/pv-target-images/e880e50809586f041ddccd34f74cdb1e3ef144c5feeb2752a894bf68058d1427.jpg" class="card-img-top rounded-top-4" alt="Kudumbasthan">
+                      </a>
+                      <div class="card-body">
+                          <h5 class="card-title text-warning mb-2">Thiruchitrambalam</h5>
+                          <p class="card-text text-light small mb-2">Amid having bad terms with his family and struggling to find the love of his life, Pazham, a delivery boy, finds solace in his best friend Shobana.</p>
+                          <br>
+                          <div class="d-flex gap-2 mb-3">
+                              <button class="btn btn-sm btn-outline-info rounded-pill">Romance</button>
+                              <button class="btn btn-sm btn-outline-info rounded-pill">Musical</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+<section id="series" class="py-5 bg-dark text-light">
+    <div class="container">
+        <h2 class="text-center text-fuchsia mb-4" style="color:#ffc107">SERIES</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card h-100 bg-secondary border-0 rounded-4 shadow-sm movie-card">
+                    <a href="file:///E:/course%20file/movie%20website/series1.html" class="text-decoration-none">
+                        <img src="https://m.media-amazon.com/images/S/pv-target-images/45349fa9682499793b3d457920ffb84d86513948e872a22245062b291aabb31e.jpg" class="card-img-top rounded-top-4" alt="Ratatouille">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title text-deeppink mb-2" style="color:#ffc107">The dangerous book of boys</h5>
+                        <p class="card-text text-light small mb-2">The Dangerous Book for Boys follows Wyatt McKenna and his brothers as they "are coming to terms with the death of their dad, Patrick, a wonderful, whimsical inventor who touched the lives of everyone who knew him..</p>
+                          <br>
+                        <div class="d-flex gap-2 mb-3">
+                            <button class="btn btn-sm btn-outline-info rounded-pill">Adventure</button>
+                            <button class="btn btn-sm btn-outline-info rounded-pill">comedy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 bg-secondary border-0 rounded-4 shadow-sm movie-card">
+                    <a href="file:///E:/course%20file/movie%20website/series2.html" class="text-decoration-none">
+                        <img src="https://m.media-amazon.com/images/M/MV5BMTYyNTYyNDE3Ml5BMl5BanBnXkFtZTgwODcyNzUxNzE@._V1_.jpg" class="card-img-top rounded-top-4" alt="Encanto">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title text-deeppink mb-2" style="color:#ffc107">Grtimer Gibbon's Life on Normal Street</h5>
+                        <p class="card-text text-light small mb-2">Gortimer and his best friends, Mel and Ranger, explore their ordinary suburban neighbourhood only to discover it is surrounded by some magical forces.</p>
+                        <br>
+                        <div class="d-flex gap-2 mb-3">
+                            <button class="btn btn-sm btn-outline-info rounded-pill">Adventure</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 bg-secondary border-0 rounded-4 shadow-sm movie-card">
+                    <a href="file:///E:/course%20file/movie%20website/series3.html" class="text-decoration-none">
+                        <img src="https://mediaproxy.tvtropes.org/width/1200/https://static.tvtropes.org/pmwiki/pub/images/friends_series_poster.png" class="card-img-top rounded-top-4" alt="Friends">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title text-deeppink mb-2" style="color:#ffc107;">Friends</h5>
+                        <p class="card-text text-light small mb-2">"Friends" is a popular American sitcom that follows the lives of six friends in their 20s and early 30s living in Manhattan, New York City, exploring themes of love, relationships, careers, and friendship. </p>
+                         <br>
+                        <div class="d-flex gap-2 mb-3">
+                            <button class="btn btn-sm btn-outline-info rounded-pill">comedy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="horror" class="py-5 bg-dark text-light">
+    <div class="container">
+        <h2 class="text-center text-fuchsia mb-4" style="color:#ffc107">HORROR</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card h-100 bg-secondary border-0 rounded-4 shadow-sm movie-card">
+                    <a href="file:///E:/course%20file/movie%20website/horror1.html" class="text-decoration-none">
+                        <img src="https://images.moviesanywhere.com/412278051451bd29427d51bcb3fc468e/4311f1f7-9863-4be4-a45b-921adcf4dbac.jpg" class="card-img-top rounded-top-4" alt="Annabelle">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title text-deeppink mb-2" style="color:#ffc107">Annabelle</h5>
+                        <p class="card-text text-light small mb-2">John and Mia Form are attacked by members of a satanic cult that uses their old doll as a conduit to make their life miserable. This unleashes a string of paranormal events in the Forms' residence.</p>
+                         <br>
+                        <div class="d-flex gap-2 mb-3">
+                            <button class="btn btn-sm btn-outline-info rounded-pill">Horror</button>
+                            <button class="btn btn-sm btn-outline-info rounded-pill">Mystery</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 bg-secondary border-0 rounded-4 shadow-sm movie-card">
+                    <a href="file:///E:/course%20file/movie%20website/horror2.html" class="text-decoration-none">
+                        <img src="https://media.dailythanthi.com/h-upload/2024/07/29/4890256-munya-5-jul-29.webp" class="card-img-top rounded-top-4" alt="Munjya">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title text-deeppink mb-2" style="color: #ffc107;">Munjya</h5>
+                        <p class="card-text text-light small mb-2">A young man's visit to his native village unveils a family secret and a vengeful spirit, the Munjya, who wants to get married. Now the young man must fight to protect himself and his love from Munjya's clutches.</p>
+                        <br>
+                        <div class="d-flex gap-2 mb-3">
+                            <button class="btn btn-sm btn-outline-info rounded-pill">Horror</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 bg-secondary border-0 rounded-4 shadow-sm movie-card">
+                    <a href="file:///E:/course%20file/movie%20website/horror3.html" class="text-decoration-none">
+                        <img src="https://cdn.indiacast.com/syndication/wp-content/uploads/2023/10/04154313/Boo-Movies-Indiacast.jpg" class="card-img-top rounded-top-4" alt="Boo">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title text-deeppink mb-2" style="color: #ffc107;">Boo</h5>
+                        <p class="card-text text-light small mb-2">Four friends are captivated by a horror novel during Halloween. However, reality becomes hazy as they read it, and they must confront the apparitional threat that manifests.</p>
+                        <br>
+                        <div class="d-flex gap-2 mb-3">
+                            <button class="btn btn-sm btn-outline-info rounded-pill">Horror</button>
+                            <button class="btn btn-sm btn-outline-info rounded-pill">Thriller</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+<section id="mylist">
+  <h1  style="text-align: center;color:#ffc107;">MY LIST</h1><br>
+  <a href="file:///E:/course%20file/movie%20website/Fav%20list.html#mylist"><button class="btn btn-success" style="margin-left: 565px;">Favourite List</button></a>
+  <ul class="list-group">
+    <li class="list-group-item bg-dark text-light d-flex justify-content-between align-items-center">
+        <span>Ratatouille</span>
+        <div>
+            <a href="kids1.html" class="btn btn-sm btn-outline-info" onclick="markAsSeen('ratatouille')">Trailer</a>
+            <span id="ratatouille-status" class="badge bg-secondary ms-2">Unseen</span>
+        </div>
+    </li>
+    <li class="list-group-item bg-dark text-light d-flex justify-content-between align-items-center">
+        <span>Encanto</span>
+        <div>
+            <a href="kids2.html" class="btn btn-sm btn-outline-info" onclick="markAsSeen('encanto')">Trailer</a>
+            <span id="encanto-status" class="badge bg-secondary ms-2">Unseen</span>
+        </div>
+    </li>
+    <li class="list-group-item bg-dark text-light d-flex justify-content-between align-items-center">
+        <span>Dora the lost city of gold</span>
+        <div>
+            <a href="kids3.html" class="btn btn-sm btn-outline-info" onclick="markAsSeen('dora-the-lost-city-of-gold')">Trailer</a>
+            <span id="dora-the-lost-city-of-gold-status" class="badge bg-secondary ms-2">Unseen</span>
+        </div>
+    </li>
+    <li class="list-group-item bg-dark text-light d-flex justify-content-between align-items-center">
+        <span>Maara</span>
+        <div>
+            <a href="tend1.html" class="btn btn-sm btn-outline-info" onclick="markAsSeen('maara')">Trailer</a>
+            <span id="maara-status" class="badge bg-secondary ms-2">Unseen</span>
+        </div>
+    </li>
+    <li class="list-group-item bg-dark text-light d-flex justify-content-between align-items-center">
+        <span>Ok kanmani</span>
+        <div>
+            <a href="trend2.html" class="btn btn-sm btn-outline-info" onclick="markAsSeen('ok-kanmani')">Trailer</a>
+            <span id="ok-kanmani-status" class="badge bg-secondary ms-2">Unseen</span>
+        </div>
+    </li>
+    <li class="list-group-item bg-dark text-light d-flex justify-content-between align-items-center">
+        <span>Thiruchitrambalam</span>
+        <div>
+            <a href="trend3.html" class="btn btn-sm btn-outline-info" onclick="markAsSeen('thiruchitrambalam')">Trailer</a>
+            <span id="thiruchitrambalam-status" class="badge bg-secondary ms-2">Unseen</span>
+        </div>
+    </li>
+    <li class="list-group-item bg-dark text-light d-flex justify-content-between align-items-center">
+        <span>The dangerous book of boys</span>
+        <div>
+            <a href="series1.html" class="btn btn-sm btn-outline-info" onclick="markAsSeen('the-dangerous-book-of-boys')">Trailer</a>
+            <span id="the-dangerous-book-of-boys-status" class="badge bg-secondary ms-2">Unseen</span>
+        </div>
+    </li>
+    <li class="list-group-item bg-dark text-light d-flex justify-content-between align-items-center">
+        <span>Grtimer Gibbon's Life on Normal Street</span>
+        <div>
+            <a href="trend2.html" class="btn btn-sm btn-outline-info" onclick="markAsSeen('grtimer-gibbons-life-on-normal-street')">Trailer</a>
+            <span id="grtimer-gibbons-life-on-normal-street-status" class="badge bg-secondary ms-2">Unseen</span>
+        </div>
+    </li>
+    <li class="list-group-item bg-dark text-light d-flex justify-content-between align-items-center">
+        <span>Friends</span>
+        <div>
+            <a href="trend3.html" class="btn btn-sm btn-outline-info" onclick="markAsSeen('friends')">Trailer</a>
+            <span id="friends-status" class="badge bg-secondary ms-2">Unseen</span>
+        </div>
+    </li>
+    <li class="list-group-item bg-dark text-light d-flex justify-content-between align-items-center">
+        <span>Annabelle</span>
+        <div>
+            <a href="horror1.html" class="btn btn-sm btn-outline-info" onclick="markAsSeen('annabelle')">Trailer</a>
+            <span id="annabelle-status" class="badge bg-secondary ms-2">Unseen</span>
+        </div>
+    </li>
+    <li class="list-group-item bg-dark text-light d-flex justify-content-between align-items-center">
+        <span>Munjya</span>
+        <div>
+            <a href="horror2.html" class="btn btn-sm btn-outline-info" onclick="markAsSeen('munjya')">Trailer</a>
+            <span id="munjya-status" class="badge bg-secondary ms-2">Unseen</span>
+        </div>
+    </li>
+    <li class="list-group-item bg-dark text-light d-flex justify-content-between align-items-center">
+        <span>Boo</span>
+        <div>
+            <a href="horror3.html" class="btn btn-sm btn-outline-info" onclick="markAsSeen('Boo')">Trailer</a>
+            <span id="Boo-status" class="badge bg-secondary ms-2">Unseen</span>
+        </div>
+    </li>
+    
+    <script>
+    function markAsSeen(movieId) {
+      const statusSpan = document.getElementById(movieId + "-status");
+      if (statusSpan) {
+        statusSpan.textContent = "Seen";
+        statusSpan.classList.remove("bg-secondary");
+        statusSpan.classList.add("bg-success");
+      }
+    }
+    </script>
+    </li>
+</ul>
+</section>
+
+  
+</section>
+
+<br><br>
+<footer class="bg-dark text-white text-center py-3">
+  <p>&copy; 2025 Cinebae.All rights reserved </p>
+</footer>
+
+<script>
+function markAsSeen(itemId) {
+    const statusElement = document.getElementById(itemId + '-status');
+    if (statusElement) {
+        statusElement.textContent = 'Seen';
+        statusElement.classList.remove('bg-secondary');
+        statusElement.classList.add('bg-success');
+        // Save the status to localStorage
+        localStorage.setItem(itemId + '-seen', 'true');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const items = document.querySelectorAll('.list-group-item');
+    
+    items.forEach(item => {
+        const itemId = item.querySelector('a').getAttribute('onclick').match(/'([^']+)'/)[1]; // Extract itemId from the onclick event
+        
+        // Check the saved status in localStorage
+        if (localStorage.getItem(itemId + '-seen') === 'true') {
+            const statusElement = document.getElementById(itemId + '-status');
+            if (statusElement) {
+                statusElement.textContent = 'Seen';
+                statusElement.classList.remove('bg-secondary');
+                statusElement.classList.add('bg-success');
+            }
+        }
+    });
+});    
+</script>              
+    
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    
+            // Movie search logic (remains the same)
+            if (searchTerm.includes('aladdin')) {
+                window.location.href = '#home';
+            } else if (searchTerm.includes('dora')) {
+                window.location.href = '#home';
+            } else if (searchTerm.includes('annabelle')){
+                window.location.href = '#home';
+            } else if (searchTerm.includes('Ratatouille')){
+                window.location.href = '#kids';
+            } else if (searchTerm.includes('Encanto')){
+                window.location.href = '#kids';
+            } else if(searchTerm.includes('Dora the lost city of gold')){
+                window.location.href = '#kids';
+            } else if(searchTerm.includes('Maara')){
+                window.location.href = '#trending';
+            } else if(searchTerm.includes('Ok kanmani')){
+                window.location.href = '#trending';
+            } else if(searchTerm.includes('kudumbasthan')){
+                window.location.href = '#trending';
+            } else if(searchTerm.includes('wonka')){
+                window.location.href = '#trending';
+            } else if (searchTerm.includes('falimy')){
+                window.location.href = '#trending';
+            } else if (searchTerm.includes('beasts')){
+                window.location.href = '#trending';
+            } else {
+                alert('Movie not found!');
+            }
+        });
+    </script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ratings = document.querySelectorAll('.rating');
+    
+            ratings.forEach(rating => {
+                const stars = rating.querySelectorAll('label');
+                const inputs = rating.querySelectorAll('input');
+    
+                stars.forEach((star, index) => {
+                    star.addEventListener('click', () => {
+                        inputs[index].checked = true;
+    
+                        stars.forEach((s, i) => {
+                            if (i <= index) {
+                                s.style.color = 'gold';
+                            } else {
+                                s.style.color = 'gray';
+                            }
+                        });
+                    });
+                });
+    
+                inputs.forEach((input,index)=>{
+                    if(input.checked){
+                        stars.forEach((s,i)=>{
+                            if(i<=index){
+                                s.style.color = 'gold';
+                            } else {
+                                s.style.color = 'gray';
+                            }
+                        })
+                    }
+                })
+            });
+        });
+    </script>
+    
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+
+
+
+
+
+

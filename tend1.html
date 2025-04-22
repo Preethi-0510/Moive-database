@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maara</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #f0ad4e;
+            --secondary-color: #a7771d;
+            --text-light: #f8f9fa;
+            --text-dark: #212529;
+            --bg-overlay: rgba(0, 0, 0, 0.7);
+            --header-bg: rgba(0, 0, 0, 0.5);
+            --border-radius: 8px;
+            --spacing-sm: 10px;
+            --spacing-md: 20px;
+            --spacing-lg: 30px;
+            --font-family: 'Poppins', sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            font-family: var(--font-family);
+            background-image: url("https://png.pngtree.com/thumb_back/fh260/background/20210403/pngtree-green-halo-gradual-movie-film-background-image_603536.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: var(--header-bg);
+            padding: var(--spacing-sm) 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        .nav-list .nav-item {
+            margin: 0 var(--spacing-md);
+        }
+
+        .nav-list .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .nav-list .nav-link:hover,
+        .nav-list .nav-link.active {
+            color: var(--primary-color);
+        }
+
+        main {
+            padding-top: 60px; /* Adjust based on header height */
+            text-align: center;
+            padding: var(--spacing-lg);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            overflow-y: auto;
+        }
+
+        .movie-details {
+            background-color: var(--bg-overlay);
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius);
+            max-width: 80%;
+            width: 700px;
+            margin-bottom: var(--spacing-lg);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .movie-details h1 {
+            font-size: 2.5em;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .movie-details img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            margin-bottom: var(--spacing-md);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .movie-details p {
+            line-height: 1.6;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .rating {
+            font-size: 1.8em;
+            color: gold;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .rating-stars {
+            display: inline-block;
+            font-size: 1.5em;
+            line-height: 1;
+        }
+
+        .rating-stars::before {
+            content: '★★★★★'; /* Static rating using star characters */
+            letter-spacing: 5px;
+        }
+
+        .trailer-button {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border: none;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius);
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+        }
+
+        .trailer-button:hover {
+            background-color: var(--secondary-color);
+            transform: scale(1.05);
+        }
+
+        #trailer-section {
+            width: 100%;
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+        }
+
+        #trailer-heading {
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-md);
+        }
+
+        #trailer-iframe-container {
+            width: 90%;
+            max-width: 1280px;
+            aspect-ratio: 16 / 9; /* Maintain aspect ratio */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+            border-radius: var(--border-radius);
+            overflow: hidden; /* Prevent iframe from overflowing rounded corners */
+        }
+
+        #trailer-iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .back-button {
+            background-color: transparent;
+            color: var(--text-light);
+            border: 2px solid var(--primary-color);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius);
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: var(--spacing-lg);
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+
+        .back-button:hover {
+            background-color: var(--primary-color);
+            color: var(--text-dark);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul class="nav-list">
+                <li class="nav-item"><a class="nav-link active" href="file:///E:/course%20file/movie%20website/index.html#home">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#synopsis">Synopsis</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="synopsis" class="movie-details">
+            <h1 style="color: #f0ad4e;">MAARA</h1>
+            <img src="https://i.ytimg.com/vi/anaAdys9S9E/maxresdefault.jpg" alt="MAARA Movie Poster">
+            <p>Paaru, a restoration architect trying to avoid a marriage proposal, arrives in a Kerala village for a project.
+                She discovers a series of wall paintings depicting a fairy tale she remembers from childhood.
+                Intrigued, she seeks the artist, Maara, a free-spirited traveler who has touched many lives.
+                Her search leads her to various individuals connected to Maara, each with a unique story of his impact on their lives.
+                As Paaru pieces together Maara's story through these encounters, she develops feelings for him.
+                The film follows Paaru's journey of discovery and her eventual meeting with the elusive Maara. </p>
+              <P>The leading cast includes:
+                R. Madhavan as Maara
+                Shraddha Srinath as Parvathy (Paaru)</P>
+               <p> The movie "Maara" was directed by Dhilip Kumar in his directorial debut.</p>
+                <p>Released:January 8, 2021.</p>
+            <div class="rating">
+                <span class="rating-stars"></span>
+            </div>
+            <button class="trailer-button" onclick="showTrailer()">Watch Trailer</button>
+        </section>
+
+        <section id="trailer-section" style="display: none;">
+            <h2 id="trailer-heading">Official Trailer</h2>
+                 <div id="trailer-iframe-container">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/Lv5KUKKwQEw?si=QSrbcs4YzI9j4lIh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <button class="back-button" onclick="showSynopsis()">Back to Synopsis</button>
+        </section>
+    </main>
+
+    <script>
+        const synopsisSection = document.getElementById('synopsis');
+        const trailerSection = document.getElementById('trailer-section');
+        const navLinks = document.querySelectorAll('.nav-list .nav-link');
+
+        function showTrailer() {
+            synopsisSection.style.display = 'none';
+            trailerSection.style.display = 'flex';
+            setActiveNavLink('trailer');
+            trailerSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showSynopsis() {
+            trailerSection.style.display = 'none';
+            synopsisSection.style.display = 'block';
+            setActiveNavLink('synopsis');
+            synopsisSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function setActiveNavLink(id) {
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${id}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Set initial active link
+        setActiveNavLink('synopsis');
+    </script>
+</body>
+</html>

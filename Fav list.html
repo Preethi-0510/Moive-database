@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>iMOVIE</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            overflow-x: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #181818; /* Dark background */
+            color: #e0e0e0; /* Light text */
+        }
+
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.85) !important;
+            border-bottom: 1px solid #333;
+        }
+
+        .navbar-brand {
+            color: #ffc107 !important; /* Gold brand text */
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .nav-link {
+            color: #f8f9fa !important; /* Light nav link text */
+            transition: color 0.3s ease-in-out;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #ffc107 !important;
+        }
+
+        .carousel-item {
+            position: relative;
+        }
+
+        .carousel-item img {
+            height: 550px;
+            object-fit: cover;
+            width: 100%;
+            filter: brightness(70%); /* Slightly dim carousel images */
+        }
+
+        .carousel-caption {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+        }
+
+        .carousel-caption h5 {
+            color: #ffc107;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .carousel-caption p {
+            font-size: 1.1rem;
+        }
+
+        .movie-section {
+            padding: 40px 0;
+        }
+
+        .section-title {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            font-weight: bold;
+            border-bottom: 2px solid #ffc107;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .movie-card {
+            background-color: #212529; /* Dark card background */
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+        }
+
+        .movie-card img {
+            height: 300px;
+            object-fit: cover;
+            width: 100%;
+            display: block;
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+
+        .card-title {
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-text {
+            color: #ccc;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+            height: 60px; /* Fixed height for description */
+            overflow: hidden;
+        }
+
+        .movie-details {
+            color: #999;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .genre-buttons button {
+            background-color: #343a40;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .genre-buttons button:hover {
+            background-color: #555;
+        }
+
+        .rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: left; /* Align rating to the left */
+            margin-top: 10px;
+        }
+
+        .rating input {
+            display: none;
+        }
+
+        .rating label {
+            font-size: 1.2rem;
+            color: #6c757d; /* Light gray stars */
+            cursor: pointer;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .rating input:checked ~ label,
+        .rating label:hover,
+        .rating label:hover ~ label {
+            color: #ffc107; /* Gold active stars */
+        }
+
+        /* Adjustments for smaller screens */
+        @media (max-width: 768px) {
+            .carousel-item img {
+                height: 400px;
+            }
+            .carousel-caption {
+                width: 90%;
+            }
+            .carousel-caption h5 {
+                font-size: 2rem;
+            }
+            .row-cols-md-3 > * {
+                flex-basis: 50%;
+                max-width: 50%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .row-cols-md-3 > * {
+                flex-basis: 100%;
+                max-width: 100%;
+            }
+            .carousel-item img {
+                height: 300px;
+            }
+            .carousel-caption h5 {
+                font-size: 1.5rem;
+            }
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-dark navbar-expand-lg fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                CINEBAE
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="file:///E:/course%20file/movie%20website/index.html#Home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#mylist">My List</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<br>
+<section id="kids" class="py-5 bg-dark text-light">
+      <div class="container">
+          <h2 class="text-center text-fuchsia mb-4" style="color:#ffc107">FAVOURITE</h2>
+          <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card h-100 bg-secondary border-0 rounded-4 shadow-sm movie-card">
+                    <a href="file:///E:/course%20file/movie%20website/kids1.html" class="text-decoration-none">
+                        <img src="https://lumiere-a.akamaihd.net/v1/images/p_ratatouille_19736_0814231f.jpeg?region=0%2C0%2C540%2C810" class="card-img-top rounded-top-4" alt="Ratatouille">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title text-deeppink mb-2" style="color:#ffc107">Ratatouille</h5>
+                        <p class="card-text text-light small mb-2">Remy, a rat with culinary aspirations, navigates the challenges of pursuing his dream in the human world.</p>
+                         <br>
+                        <div class="d-flex gap-2 mb-3">
+                            <button class="btn btn-sm btn-outline-info rounded-pill">Adventure</button>
+                            <button class="btn btn-sm btn-outline-info rounded-pill">Family</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 bg-secondary border-0 rounded-4 shadow-sm movie-card">
+                    <a href="file:///E:/course%20file/movie%20website/kids2.html" class="text-decoration-none">
+                        <img src="https://www.kamoi.net/wp-content/uploads/2022/02/p_encanto_homeent_22359_4892ae1c-1.jpeg" class="card-img-top rounded-top-4" alt="Encanto">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title text-deeppink mb-2" style="color: #ffc107;">Encanto</h5>
+                        <p class="card-text text-light small mb-2">The extraordinary Madrigal family living in a magical house in Colombia discovers their unique gifts, except for Mirabel.</p>
+                        <br>
+                        <div class="d-flex gap-2 mb-3">
+                            <button class="btn btn-sm btn-outline-info rounded-pill">Family</button>
+                            <button class="btn btn-sm btn-outline-info rounded-pill">Fantasy</button>
+                            <button class="btn btn-sm btn-outline-info rounded-pill">Musical</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="col">
+                <div class="card bg-secondary border-0 rounded-4 shadow-sm movie-card">
+                    <a href="file:///E:/course%20file/movie%20website/tend1.html" class="text-decoration-none">
+                        <img src="https://c.saavncdn.com/633/Maara-Tamil-2021-20210203211914-500x500.jpg" class="card-img-top rounded-top-4" alt="Maara">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title text-warning mb-2" style="color:#ffc107">Mara</h5>
+                        <p class="card-text text-light small mb-2">A young woman named Paaru notices a painting on the walls of a coastal town that depicts a fairy tale she once heard as a child. Intrigued, she sets out to find the person who painted it..</p>
+                        <br>
+                        <div class="d-flex gap-2 mb-3">
+                            <button class="btn btn-sm btn-outline-info rounded-pill">Romance</button>
+                            <button class="btn btn-sm btn-outline-info rounded-pill">Adventure</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col">
+                <div class="card bg-secondary border-0 rounded-4 shadow-sm movie-card">
+                    <a href="file:///E:/course%20file/movie%20website/trend3.html" class="text-decoration-none">
+                        <img src="https://m.media-amazon.com/images/S/pv-target-images/e880e50809586f041ddccd34f74cdb1e3ef144c5feeb2752a894bf68058d1427.jpg" class="card-img-top rounded-top-4" alt="Kudumbasthan">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title text-warning mb-2" style="color:#ffc107">Thiruchitrambalam</h5>
+                        <p class="card-text text-light small mb-2">Amid having bad terms with his family and struggling to find the love of his life, Pazham, a delivery boy, finds solace in his best friend Shobana.</p>
+                        <br>
+                        <div class="d-flex gap-2 mb-3">
+                            <button class="btn btn-sm btn-outline-info rounded-pill">Romance</button>
+                            <button class="btn btn-sm btn-outline-info rounded-pill">Musical</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 bg-secondary border-0 rounded-4 shadow-sm movie-card">
+                    <a href="file:///E:/course%20file/movie%20website/series1.html" class="text-decoration-none">
+                        <img src="https://m.media-amazon.com/images/S/pv-target-images/45349fa9682499793b3d457920ffb84d86513948e872a22245062b291aabb31e.jpg" class="card-img-top rounded-top-4" alt="">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title text-deeppink mb-2" style="color:#ffc107;">The dangerous book of boys</h5>
+                        <p class="card-text text-light small mb-2">The Dangerous Book for Boys follows Wyatt McKenna and his brothers as they "are coming to terms with the death of their dad, Patrick, a wonderful, whimsical inventor who touched the lives of everyone who knew him..</p>
+                         <br>
+                        <div class="d-flex gap-2 mb-3">
+                            <button class="btn btn-sm btn-outline-info rounded-pill">Adventure</button>
+                            <button class="btn btn-sm btn-outline-info rounded-pill">comedy</button>
+                       </div>
+                </div>
+            </div>
+        </div> 
+    <div class="col">
+        <div class="card h-100 bg-secondary border-0 rounded-4 shadow-sm movie-card">
+            <a href="file:///E:/course%20file/movie%20website/series2.html" class="text-decoration-none">
+                <img src="https://m.media-amazon.com/images/M/MV5BMTYyNTYyNDE3Ml5BMl5BanBnXkFtZTgwODcyNzUxNzE@._V1_.jpg" class="card-img-top rounded-top-4" alt="">
+            </a>
+            <div class="card-body">
+                <h5 class="card-title text-deeppink mb-2" style="color:#ffc107;">Grtimer Gibbon's Life on Normal Street</h5>
+                <p class="card-text text-light small mb-2">Gortimer and his best friends, Mel and Ranger, explore their ordinary suburban neighbourhood only to discover it is surrounded by some magical forces.</p>
+                 <br>
+                <div class="d-flex gap-2 mb-3">
+                    <button class="btn btn-sm btn-outline-info rounded-pill">Adventure</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+</div>
+</div>
+</section>
+  
+        
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ratings = document.querySelectorAll('.rating');
+    
+            ratings.forEach(rating => {
+                const stars = rating.querySelectorAll('label');
+                const inputs = rating.querySelectorAll('input');
+    
+                stars.forEach((star, index) => {
+                    star.addEventListener('click', () => {
+                        inputs[index].checked = true; // Check the corresponding radio button
+                        
+                        // Visual feedback: Highlight selected stars
+                        stars.forEach((s, i) => {
+                            if (i <= index) {
+                                s.style.color = 'gold';
+                            } else {
+                                s.style.color = 'gray';
+                            }
+                        });
+                    });
+                });
+    
+                //Initially highlight the already selected stars if any.
+                inputs.forEach((input,index)=>{
+                    if(input.checked){
+                        stars.forEach((s,i)=>{
+                            if(i<=index){
+                                s.style.color = 'gold';
+                            } else {
+                                s.style.color = 'gray';
+                            }
+                        })
+                    }
+                })
+            });
+        });
+    
+    </script>
+
+
+
+    
